@@ -13,56 +13,39 @@ public class WaterCalculator {
       return 0;
     }
 
-    //preprocess landscape
-    int[] leftBorderHeight = new int[landscape.length];
-    int[] rightBorderHeight = new int[landscape.length];
-    calculateBorders(landscape, leftBorderHeight, rightBorderHeight);
-
-    return calculateAmount(landscape, leftBorderHeight, rightBorderHeight);
+    return calculateAmount(landscape);
   }
 
   /**
-   * Для каждого элемента входящего массива вычисляем количество воды, суммируя итог
+   * Вычисляем количество воды.
    * @param landscape - массив ландшафта
-   * @param leftBorderHeight - массив левых границ
-   * @param rightBorderHeight - массив правх границ
    * @return количество воды
    */
-  private int calculateAmount(int[] landscape, int[] leftBorderHeight, int[] rightBorderHeight) {
+  private int calculateAmount(int[] landscape) {
+    int currentLeftMaxBorder = landscape[0];
+    int currentRightMaxBorder = landscape[landscape.length - 1];
+    int leftIndex = 1;
+    int rightIndex = landscape.length - 2;
     int amount = 0;
-    for (int i = 0; i < landscape.length; i++) {
-      amount += Math.min(leftBorderHeight[i], rightBorderHeight[i]) - landscape[i];
+    while (leftIndex <= rightIndex) {
+      if (landscape[leftIndex] < landscape[rightIndex]) {
+        if (landscape[leftIndex] < currentLeftMaxBorder) {
+          amount += currentLeftMaxBorder - landscape[leftIndex];
+        } else {
+          currentLeftMaxBorder = landscape[leftIndex];
+        }
+        leftIndex++;
+      } else {
+        if (landscape[rightIndex] < currentRightMaxBorder) {
+          amount += currentRightMaxBorder - landscape[rightIndex];
+        } else {
+          currentRightMaxBorder = landscape[rightIndex];
+        }
+        rightIndex--;
+      }
     }
+
     return amount;
-  }
-
-  /**
-   * Для каждого элемента массива landscape вычисляем максимальную границу слева и справа
-   * @param landscape - массив ландшафта
-   * @param leftBorderHeight - массив левых границ
-   * @param rightBorderHeight - массив правых границ
-   */
-  private void calculateBorders(int[] landscape, int[] leftBorderHeight, int[] rightBorderHeight) {
-    // инициализируем текущую левую и правую границу крайним левым и крайним правым элементом
-    int currentLeftHeight = landscape[0];
-    int currentRightHeight = landscape[landscape.length - 1];
-
-    //проходим по массиву двумя указателями с начала и с конца и обновляем массивы левых и правых границ
-    for (int i = 0; i < landscape.length; i++) {
-      if (currentLeftHeight < landscape[i]) {
-        currentLeftHeight = landscape[i];
-        leftBorderHeight[i] = landscape[i];
-      } else {
-        leftBorderHeight[i] = currentLeftHeight;
-      }
-      final int rightIndex = landscape.length - 1 - i;
-      if (currentRightHeight < landscape[rightIndex]) {
-        currentRightHeight = landscape[rightIndex];
-        rightBorderHeight[rightIndex] = landscape[rightIndex];
-      } else {
-        rightBorderHeight[rightIndex] = currentRightHeight;
-      }
-    }
   }
 
   /**
