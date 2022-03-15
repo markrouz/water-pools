@@ -89,6 +89,11 @@ public class WaterCalculatorTest {
     assertEquals(0, waterCalculator.calculateWaterAmount(landscape));
   }
 
+  @Test
+  public void ladderTest() {
+    int[] landscape = new int[] {1, 2, 3, 4, 5};
+    assertEquals(0, waterCalculator.calculateWaterAmount(landscape));
+  }
 
   /**
    *🟫🟫🟫🟫🟫🟫🟦🟦🟫

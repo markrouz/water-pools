@@ -24,8 +24,8 @@ public class WaterCalculator {
   private int calculateAmount(int[] landscape) {
     int currentLeftMaxBorder = landscape[0];
     int currentRightMaxBorder = landscape[landscape.length - 1];
-    int leftIndex = 1;
-    int rightIndex = landscape.length - 2;
+    int leftIndex = 0;
+    int rightIndex = landscape.length - 1;
     int amount = 0;
     while (leftIndex <= rightIndex) {
       if (landscape[leftIndex] < landscape[rightIndex]) {
